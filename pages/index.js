@@ -2,44 +2,30 @@ import React, { useState } from "react";
 import { data } from "/data/data.js";
 import Header from "../components/header";
 import utilStyles from "../styles/utils.module.css";
-import { formatTime } from "../utils";
+import { COLS, formatTime, sortData } from "../utils";
 
 const HomePage = () => {
-  const [titleDirection, setTitleDirection] = useState("");
-  const [magDirection, setMagDirection] = useState("");
-  const [timeDirection, setTimeDirection] = useState("");
-  const [col, setCol] = useState("");
+  const [titleDirection, setTitleDirection] = useState(false);
+  const [magDirection, setMagDirection] = useState(false);
+  const [timeDirection, setTimeDirection] = useState(false);
+  const [colToSort, setCol] = useState("");
+
+  const DIRECTIONS = {
+    [COLS.TIME]: timeDirection,
+    [COLS.MAG]: magDirection,
+    [COLS.TITLE]: titleDirection,
+  };
 
   const handleColClick = (e) => {
     const id = e.target.id;
-    console.log(id);
     setCol(id);
-    if (id === "title") {
+    if (id === COLS.TITLE) {
       setTitleDirection(!titleDirection);
-    } else if (id === "mag") {
+    } else if (id === COLS.MAG) {
       setMagDirection(!magDirection);
-    } else if (id === "time") {
+    } else if (id === COLS.TIME) {
       setTimeDirection(!timeDirection);
     }
-  };
-
-  const sortData = (data) => {
-    data.sort((a, b) => {
-      if (col === "title") {
-        return titleDirection
-          ? a.properties.place > b.properties.place
-          : a.properties.place < b.properties.place;
-      } else if (col === "mag") {
-        return magDirection
-          ? a.properties.place > b.properties.place
-          : a.properties.place < b.properties.place;
-      } else if (col === "time") {
-        return timeDirection
-          ? a.properties.time > b.properties.time
-          : a.properties.time < b.properties.time;
-      }
-    });
-    return data;
   };
 
   return (
@@ -54,39 +40,27 @@ const HomePage = () => {
         <table className={utilStyles.table}>
           <thead>
             <tr>
-              <th
-                id="title"
-                onClick={handleColClick}
-                className={utilStyles.tableHeader}
-              >
-                Title
-              </th>
-              <th
-                id="mag"
-                onClick={handleColClick}
-                className={utilStyles.tableHeader}
-              >
-                Magnitude
-              </th>
-              <th
-                id="time"
-                onClick={handleColClick}
-                className={utilStyles.tableHeader}
-              >
-                Time
-              </th>
+              {[COLS.TITLE, COLS.MAG, COLS.TIME].map((item, index) => (
+                <th key={index}>
+                  <span key={item} id={item} onClick={handleColClick}>{item}</span>
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
-            {sortData(data.data.features).map((record) => (
-              <tr key={record.id} className={utilStyles.tableRow}>
-                <td>
-                  <a href={`detail/${record.id}`}>{record.properties.place}</a>
-                </td>
-                <td>{record.properties.mag}</td>
-                <td>{formatTime(record.properties.time)}</td>
-              </tr>
-            ))}
+            {sortData(data.data.features, colToSort, DIRECTIONS[colToSort]).map(
+              (record) => (
+                <tr key={record.id}>
+                  <td>
+                    <a href={`detail/${record.id}`}>
+                      {record.properties.place}
+                    </a>
+                  </td>
+                  <td>{record.properties.mag}</td>
+                  <td>{formatTime(record.properties.time)}</td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>
