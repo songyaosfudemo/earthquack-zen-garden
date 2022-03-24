@@ -1,0 +1,47 @@
+.home {
+  margin-top: 2rem;
+}
+
+.title {
+  text-align: center;
+}
+
+.table {
+  margin: auto;
+  align-items: center;
+}
+
+.table td {
+  padding: 0 15px;
+}
+
+.details {
+  width: max-content;
+  margin: auto;
+}
+
+.details_content{
+  display: flex;
+  flex-direction: row;
+}
+
+.details_entries,
+.details_data {
+  display: flex;
+  flex-direction: column;
+}
+
+.details_entries {
+    margin-right: 3rem;
+    font-weight: bold;
+}
+
+.bio {
+    max-width: 20rem;
+}
+
+.avatar{
+    width: 10rem;
+    height: 10rem;
+    margin-right: 2rem;
+}

@@ -1,0 +1,16 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+a {
+  color: #0011bb;
+}
+
+a:visited {
+  color: #6600cc;
+}
